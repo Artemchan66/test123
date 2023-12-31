@@ -18,13 +18,21 @@ var actionButton = "Жмяк";
 var audioPlayer = document.createElement('audio');
 audioPlayer.controls = true;
 audioPlayer.autoplay = true;
-audioPlayer.loop = true;
+audioPlayer.loop = false; // Set loop to false initially
 audioPlayer.style.position = 'fixed';
 audioPlayer.style.bottom = '10px';
 audioPlayer.style.left = '10px';
-audioPlayer.innerHTML = `
-    <source src="msc/Hot Chocolate.mp3" type="audio/mp3">
-`;  
+
+var musicSources = [
+    'msc/Whoville.mp3',
+    'msc/Hot Chocolate.mp3',
+    'msc/LightsOn.mp3'
+];
+
+var currentMusicIndex = 0;
+
+audioPlayer.src = musicSources[currentMusicIndex];
+
 document.body.appendChild(audioPlayer);
 
 function displayQuestion() {
@@ -114,4 +122,9 @@ function toggleMusic() {
     }
 }
 
+audioPlayer.addEventListener('ended', function () {
+    currentMusicIndex = (currentMusicIndex + 1) % musicSources.length;
+    audioPlayer.src = musicSources[currentMusicIndex];
+    audioPlayer.play();
+});
 displayQuestion();
